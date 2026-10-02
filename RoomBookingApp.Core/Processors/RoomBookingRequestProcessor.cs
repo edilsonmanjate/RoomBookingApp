@@ -1,16 +1,50 @@
-﻿using RoomBookingApp.Core.Models;
+﻿using RoomBookingApp.Core.Domain;
+using RoomBookingApp.Core.Enums;
+using RoomBookingApp.Core.Models;
+using RoomBookingApp.Core.Services;
 
 namespace RoomBookingApp.Core.Processors;
 
 public class RoomBookingRequestProcessor
 {
-    public RoomBookingRequestProcessor()
+    private readonly IRoomBookingService _roomBookingService;
+
+    public RoomBookingRequestProcessor(IRoomBookingService roomBookingService)
     {
+        _roomBookingService = roomBookingService;
     }
 
     public RoomBookingResult BookRoom(RoomBookingRequest bookingRequest)
     {
-        return new RoomBookingResult
+        if (bookingRequest is null)
+        {
+            throw new ArgumentNullException(nameof(bookingRequest));
+        }
+
+        var availableRoom = _roomBookingService.GetAvailableRooms(bookingRequest.Date);
+        var result = CreateRoomBookingObject<RoomBookingResult>(bookingRequest);
+
+        if (availableRoom.Any())
+        {
+            var room =  availableRoom.First();
+            var roomBooking = CreateRoomBookingObject<RoomBooking>(bookingRequest);
+            roomBooking.RoomId = room.Id;
+            _roomBookingService.save(roomBooking);
+
+            result.RoomBookingId = roomBooking.RoomId;
+            result.Flag = BookingResultFlag.Success;   
+        }
+        else
+        {
+            result.Flag = BookingResultFlag.Failure;
+        }
+            
+        return result;
+    }
+
+    private static TRoomBooking CreateRoomBookingObject<TRoomBooking>(RoomBookingRequest bookingRequest) where TRoomBooking : RoomBookingBase, new()
+    {
+        return new TRoomBooking
         {
             FullName = bookingRequest.FullName,
             Email = bookingRequest.Email,
