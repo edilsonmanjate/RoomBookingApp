@@ -1,7 +1,8 @@
-﻿using RoomBookingApp.Core.Domain;
-using RoomBookingApp.Core.Enums;
+﻿using RoomBookingApp.Core.Enums;
 using RoomBookingApp.Core.Models;
 using RoomBookingApp.Core.Services;
+using RoomBookingApp.Domain;
+using RoomBookingApp.Domain.BaseModels;
 
 namespace RoomBookingApp.Core.Processors;
 
@@ -29,7 +30,7 @@ public class RoomBookingRequestProcessor
             var room =  availableRoom.First();
             var roomBooking = CreateRoomBookingObject<RoomBooking>(bookingRequest);
             roomBooking.RoomId = room.Id;
-            _roomBookingService.save(roomBooking);
+            _roomBookingService.Save(roomBooking);
 
             result.RoomBookingId = roomBooking.RoomId;
             result.Flag = BookingResultFlag.Success;   
