@@ -17,8 +17,7 @@ builder.Services.AddOpenApi();
 
 builder.Services.AddDbContext<RoomBookingDbContext>(options =>
 {
-    options.UseSqlite(builder.Configuration.GetConnectionString("RoomBooking")
-                  ?? "Data Source=roombooking.db");
+    options.UseSqlite("Data Source=roombooking.db");
 });
 
 builder.Services.AddScoped<IRoomBookingService, RoomBookingService>();
