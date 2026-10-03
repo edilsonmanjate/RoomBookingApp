@@ -6,7 +6,7 @@ using RoomBookingApp.Domain.BaseModels;
 
 namespace RoomBookingApp.Core.Processors;
 
-public class RoomBookingRequestProcessor
+public class RoomBookingRequestProcessor : IRoomBookingRequestProcessor
 {
     private readonly IRoomBookingService _roomBookingService;
 
@@ -27,19 +27,19 @@ public class RoomBookingRequestProcessor
 
         if (availableRoom.Any())
         {
-            var room =  availableRoom.First();
+            var room = availableRoom.First();
             var roomBooking = CreateRoomBookingObject<RoomBooking>(bookingRequest);
             roomBooking.RoomId = room.Id;
             _roomBookingService.Save(roomBooking);
 
             result.RoomBookingId = roomBooking.RoomId;
-            result.Flag = BookingResultFlag.Success;   
+            result.Flag = BookingResultFlag.Success;
         }
         else
         {
             result.Flag = BookingResultFlag.Failure;
         }
-            
+
         return result;
     }
 

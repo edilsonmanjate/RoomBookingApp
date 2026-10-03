@@ -3,11 +3,11 @@ using RoomBookingApp.Domain;
 
 namespace RoomBookingApp.Persistence.Respositories;
 
-public class RommBookingService : IRoomBookingService
+public class RoomBookingService : IRoomBookingService
 {
     private readonly RoomBookingDbContext _context;
 
-    public RommBookingService(RoomBookingDbContext context)
+    public RoomBookingService(RoomBookingDbContext context)
     {
         _context = context;
     }

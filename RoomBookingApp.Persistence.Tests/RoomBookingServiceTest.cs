@@ -19,16 +19,16 @@ public class RoomBookingServiceTest
 
         var context = new RoomBookingDbContext(dbOptions);
 
-        context.Add( new Room { Id = 1, Name = "Room 1" });
-        context.Add( new Room { Id = 2, Name = "Room 2" });
-        context.Add( new Room { Id = 3, Name = "Room 3" });
+        context.Add( new Room { Id = 1,  Name = "Room 1" });
+        context.Add( new Room { Id = 2,  Name = "Room 2" });
+        context.Add( new Room { Id = 3,  Name = "Room 3" });
 
-        context.Add(new RoomBooking { RoomId = 1, Date = date });
-        context.Add(new RoomBooking { RoomId = 2, Date = date.AddDays(-1) });
+        context.Add(new RoomBooking { RoomId = 1, Email = "user1@example.com", FullName = "User 1", Date = date });
+        context.Add(new RoomBooking { RoomId = 2, Email = "user2@example.com", FullName = "User 2", Date = date.AddDays(-1) });
 
         context.SaveChanges();
 
-        var roomBookingservice = new RommBookingService(context);
+        var roomBookingservice = new RoomBookingService(context);
 
         // Act
         var availableRooms = roomBookingservice.GetAvailableRooms(date);
@@ -54,10 +54,10 @@ public class RoomBookingServiceTest
         context.Add(new Room { Id = 1, Name = "Room 1" });
         context.SaveChanges();
 
-        var roomBookingservice = new RommBookingService(context);
+        var roomBookingservice = new RoomBookingService(context);
 
         // Act
-        roomBookingservice.Save(new RoomBooking { RoomId = 1, Date = date });
+        roomBookingservice.Save(new RoomBooking { RoomId = 1, Email = "user1@example.com", FullName = "User 1", Date = date });
 
         // Assert
         var savedBooking = context.RoomBookings.FirstOrDefault(rb => rb.RoomId == 1 && rb.Date == date);
