@@ -21,6 +21,5 @@ public class UnitTest1
 
         result.Count().ShouldBeGreaterThan(1);
         result.ShouldNotBeNull();
-
     }
 }
