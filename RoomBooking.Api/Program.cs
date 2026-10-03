@@ -52,13 +52,6 @@ if (app.Environment.IsDevelopment())
         ScalarTarget.Http,
         ScalarTarget.CSharp
         };
-        options.Authentication = new ScalarAuthenticationOptions()
-        {
-            ApiKey = new ApiKeyOptions()
-            {
-                Token = "myToken"
-            }
-        };
     });
 }
 
